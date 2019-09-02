@@ -1,6 +1,5 @@
 package com.example.musicplayer.utils;
 
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,9 +9,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import com.example.musicplayer.R;
-import com.example.musicplayer.data.OfflineSongData;
 import com.example.musicplayer.data.SongData;
-
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -129,12 +126,11 @@ public class GetAllSongs {
 
                 e.printStackTrace();
             }
-
-//            offlineSongs.add(new OfflineSongData(track, artist, bitmap, data));
-            offlineSongs.add(new SongData(track, artist, bitmap, data));
+            if (duration > 20)  //  if duration is more than 20 sec then only add the song
+                offlineSongs.add(new SongData(track, artist, bitmap, data));
         }
 
-        Log.d(TAG, "initLayout: offline songs ==> $offlineSongs");
+//        Log.d(TAG, "initLayout: offline songs ==> $offlineSongs");
         return offlineSongs;
     }
 }
