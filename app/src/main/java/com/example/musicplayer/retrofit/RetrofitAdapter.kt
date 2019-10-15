@@ -1,18 +1,27 @@
 package com.example.musicplayer.retrofit
 
+import com.example.musicplayer.data.AlbumImage
 import com.example.musicplayer.data.Music
-import com.example.musicplayer.data.SongData
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+
+val gson: Gson = GsonBuilder()
+    .setLenient()
+    .create()
+val retrofit: Retrofit = Retrofit.Builder()
+    .baseUrl("https://api.napster.com/v2.2/")
+    .addConverterFactory(GsonConverterFactory.create(gson))
+    .build()
+
+val retrofitService: RetrofitService = retrofit.create(RetrofitService::class.java)
 
 fun listOfSongs(): Call<Music> {
-    val retrofit = Retrofit.Builder()
-        .baseUrl("https://storage.googleapis.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    return retrofitService.listSongs("MDZmNTA0YmItNDJlNy00YzQxLTkyNDQtZTBhNWNjZTE0YjRh")
+}
 
-    val retrofitService = retrofit.create(RetrofitService::class.java)
-    return retrofitService.listSongs()
+fun albumImage(albumId: String): Call<AlbumImage> {
+    return retrofitService.albumImages(albumId, "MDZmNTA0YmItNDJlNy00YzQxLTkyNDQtZTBhNWNjZTE0YjRh")
 }

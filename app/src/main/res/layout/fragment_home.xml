@@ -13,7 +13,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView5"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3" android:layout_marginTop="112dp"
+            android:layout_marginTop="112dp"
+            app:layout_constraintEnd_toStartOf="@+id/playlist_2"
             app:layout_constraintTop_toTopOf="parent"/>
     <ImageView
             android:src="@android:drawable/sym_def_app_icon"
@@ -39,7 +40,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/playlist_1"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3" android:layout_marginTop="112dp"
+            android:layout_marginTop="112dp"
+            app:layout_constraintEnd_toStartOf="@+id/playlist_2"
             app:layout_constraintTop_toTopOf="parent"/>
     <ImageView
             android:src="@android:drawable/sym_def_app_icon"
@@ -53,7 +55,7 @@
             android:src="@android:drawable/sym_def_app_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
+            android:id="@+id/playlist_2"
             app:layout_constraintStart_toEndOf="@+id/playlist_1" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/playlist_1"
@@ -62,8 +64,30 @@
             android:src="@android:drawable/sym_def_app_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView" app:layout_constraintStart_toEndOf="@+id/imageView3"
+            android:id="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/playlist_2"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView3"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"/>
+            app:layout_constraintStart_toEndOf="@+id/playlist_2"
+            app:layout_constraintTop_toTopOf="@+id/playlist_2" />
+
+    <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Best of the Month"
+            app:layout_constraintEnd_toEndOf="@+id/playlist_1"
+            app:layout_constraintHorizontal_bias="0.38"
+            app:layout_constraintStart_toStartOf="@+id/playlist_1"
+            app:layout_constraintTop_toBottomOf="@+id/playlist_1" />
+
+    <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Tracks"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/playlist_2"
+            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintStart_toStartOf="@+id/playlist_2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

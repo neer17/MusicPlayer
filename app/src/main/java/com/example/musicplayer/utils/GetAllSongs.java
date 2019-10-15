@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+
 import com.example.musicplayer.R;
 import com.example.musicplayer.data.SongData;
 
@@ -18,67 +19,30 @@ import java.util.ArrayList;
 
 public class GetAllSongs {
     private static final String TAG = GetAllSongs.class.getSimpleName();
-    private static final String IMAGE_NOT_AVAILABLE = "Image not available";
 
-    private ArrayList<SongData> songs = new ArrayList<>();
+    private Context context;
+    private ArrayList<SongData> offlineSongs = new ArrayList<>();
+    private ArrayList<String> offlineSongsTitle = new ArrayList<>();
 
-    public ArrayList getAllTracks(Context context) {
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.IS_MUSIC + "!=0";
-        Cursor cursor = context.getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    String source = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                    String albumArt;
-                    try {
-                        albumArt = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART));
-                    } catch (IllegalArgumentException e) {
-                        Log.e(TAG, "getAllTracks: Column does not exists");
-                        albumArt = IMAGE_NOT_AVAILABLE;
-                    }
-
-                   /* //  getting album art
-                    Long albumId = cursor.getLong(cursor
-                            .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
-                    Uri sArtworkUri = Uri
-                            .parse("content://media/external/audio/albumart");
-                    Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-
-                    Log.d(TAG, "getAllTracks: album art uri" + albumArtUri);
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(
-                                context.getContentResolver(), albumArtUri);
-                        bitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, true);
-
-                    } catch (FileNotFoundException exception) {
-                        Log.e(TAG, "getAllTracks: ", exception);
-                        bitmap = BitmapFactory.decodeResource(context.getResources(),
-                                R.drawable.spinner_animation);
-                    } catch (IOException e) {
-                        Log.e(TAG, "getAllTracks: ", e);
-                    }*/
-
-                    Log.d(TAG, "getAllTracks: bitmap: " + albumArt);
-
-                    //  adding the data
-//                    OfflineSongData s = new OfflineSongData(title, artist,source);
-//                    songs.add(s);
-
-                } while (cursor.moveToNext());
-            }
-
-            cursor.close();
-            return songs;
-        }
-
-        return null;
+    public GetAllSongs(Context context) {
+        this.context = context;
     }
 
-    public ArrayList<SongData> initLayout(Context context) throws NullPointerException {
+    public int indexOfSongFromTitle(String title) {
+        int indexOfTitle = offlineSongsTitle.indexOf(title);
+        Log.d(TAG, "indexOfSongFromTitle: index of title ==> " + indexOfTitle);
+        return indexOfTitle;
+    }
+
+    public ArrayList<String> getAllSongsTitle() {
+        return offlineSongsTitle;
+    }
+
+    public String titleFromIndex(int index) {
+        return getOfflineTracks().get(index).component1();
+    }
+
+    public ArrayList<SongData> getOfflineTracks() throws NullPointerException {
 
         ArrayList<SongData> offlineSongs = new ArrayList<>();
 
@@ -97,7 +61,7 @@ public class GetAllSongs {
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
             String album = cursor.getString(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
-            String track = cursor.getString(cursor
+            String title = cursor.getString(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
             String data = cursor.getString(cursor
                     .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
@@ -111,7 +75,6 @@ public class GetAllSongs {
                     .parse("content://media/external/audio/albumart");
             Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
 
-            Log.d(TAG, "initLayout: album art uri: " + albumArtUri.toString());
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(
@@ -121,16 +84,25 @@ public class GetAllSongs {
             } catch (FileNotFoundException exception) {
                 exception.printStackTrace();
                 bitmap = BitmapFactory.decodeResource(context.getResources(),
-                        R.drawable.spinner_animation);
+                        R.drawable.record_image_50_50);
             } catch (IOException e) {
 
                 e.printStackTrace();
             }
-            if (duration > 20)  //  if duration is more than 20 sec then only add the song
-                offlineSongs.add(new SongData(track, artist, bitmap, data));
+            if (duration > 20 * 1000)  //  if duration is more than 20 sec then only add the song
+            {
+                Log.d(TAG, "getOfflineTracks: title ==> " + title + "artist ==> " + artist + "image ==> " + bitmap
+                        + "source ==> " + data
+                );
+
+                offlineSongs.add(new SongData(title, artist, bitmap, data));
+                offlineSongsTitle.add(title);
+            }
         }
 
-//        Log.d(TAG, "initLayout: offline songs ==> $offlineSongs");
+//        Log.d(TAG, "getOfflineTracks: offline songs ==> $offlineSongs");
+
         return offlineSongs;
     }
+
 }

@@ -1,25 +1,16 @@
 package com.example.musicplayer.fragments
 
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.example.musicplayer.R
-import java.nio.file.Files.isDirectory
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import java.io.File
-import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.app.ActivityCompat.requestPermissions
-
-
 
 
 /**
@@ -29,8 +20,7 @@ import androidx.core.app.ActivityCompat.requestPermissions
 class SearchFragment : Fragment() {
     private val TAG = SearchFragment::class.java.simpleName
 
-
-
+    private lateinit var playerNotificationManager: PlayerNotificationManager
     private val REQUEST_LOCATION: Int = 101
 
     override fun onCreateView(
@@ -45,7 +35,13 @@ class SearchFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         Log.d(TAG, "onActivityCreated: ")
 
-
+//        //  player notification
+//        playerNotificationManager = PlayerNotificationManager(
+//            context,
+//            DescriptionAdapter(),
+//            CHANNEL_ID,
+//            NOTIFICATION_ID
+//        )
 
     }
     
